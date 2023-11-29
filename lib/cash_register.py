@@ -8,7 +8,7 @@ class CashRegister:
 
     def add_item(self, item, price, quantity=1):
         self.total += price * quantity
-        self.items.extend([item] * quantity)
+        self.items.extend([{"item": item, "price": price, "quantity": quantity}] * quantity)
 
     def apply_discount(self):
         if self.discount > 0:
@@ -21,7 +21,8 @@ class CashRegister:
 
     def void_last_transaction(self):
         if self.items:
-            last_transaction_amount = self.total - self.items.pop()
+            last_transaction = self.items.pop()
+            last_transaction_amount = last_transaction["price"] * last_transaction["quantity"]
             self.total -= last_transaction_amount
             return f"Last transaction voided: ${last_transaction_amount:.2f}"
         else:
